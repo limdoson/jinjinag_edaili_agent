@@ -7,11 +7,16 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state : {
         config : {
-            default_fx_config : 1,//默认分销比例
-			default_agent_income_rate : null,//代理默认进货折扣
+            agent : null,
+			agentApply :null,
         }
     },
-    mutations : {},
+    mutations : {
+		initUserInfo (state,payload) {
+			state.agent = payload.agent;
+			state.agentApply = payload.agentApply;
+		}
+	},
     actions : {},
 	plugins : [VuexAlong]
 })

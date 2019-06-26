@@ -5,16 +5,16 @@
 				<img src="../assets/img/logo.png" alt="">
 				<div>
 					<h1>
-						林杜森
-						<span class="agent-level">一级代理</span>
+						{{$store.state.agent.realname}}
+						<span class="agent-level">{{$store.state.agent.level_name}}</span>
 					</h1>
-					<p>15960209969</p>
+					<p>{{$store.state.agent.tel}}</p>
 				</div>
 			</div>
-			<div>
+			<router-link tag='div' to='/setting'>
 				设置
 				<i class="iconfont">&#xe641;</i>
-			</div>
+			</router-link>
 		</header>
 		<ul class="cell-menu">
 			<router-link tag='li' to='/adr-manage'>
@@ -77,7 +77,7 @@
 			</router-link>
 			
 		</ul>
-		<div class="btn">退出登录</div>
+		<div class="btn" @click='logout'>退出登录</div>
 	</div>
 </template>
 
@@ -94,7 +94,15 @@
 		},
 		
 		methods : {
-			
+			logout () {
+				this.http.post('/v1/ag_agent/logout',{
+					
+				}).then(res => {
+					this.utils.msg(res.msg,()=>{
+						this.$router.replace('/')
+					});
+				})
+			}
 		},
 		//mounted () {},
 		// watch () {

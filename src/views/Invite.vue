@@ -4,11 +4,13 @@
 		<p class="tips">请选择邀请代理的代理等级</p>
 		<van-radio-group v-model='agent_level'>
 			<van-cell-group>
-				<van-cell title="一级代理(￥1999)" clickable @click="agent_level = '1'">
-					<van-radio name="1" checked-color='orangered'/>
-				</van-cell>
-				<van-cell title="二级代理(￥999)" clickable @click="agent_level = '2'">
-					<van-radio name="2" checked-color='orangered'/>
+				<van-cell 
+					:title="`${item.name}(${item.money}元)`" 
+					clickable 
+					@click="agent_level = item.id" 
+					v-for='item in $store.state.agentApply'
+					:key='item.id'>
+					<van-radio :name="item.id" checked-color='orangered'/>
 				</van-cell>
 			</van-cell-group>
 		</van-radio-group>
@@ -21,7 +23,7 @@
 		components: {},
 		data () {
 			return {
-				agent_level : '1',
+				agent_level : null,
 			}
 		},
 		created () {
@@ -30,7 +32,8 @@
 		
 		methods : {
 			curfirm () {
-				this.$router.push('/invite-page')
+				console.log(this.agent_level)
+				// this.$router.push('/invite-page')
 			}
 		},
 		//mounted () {},

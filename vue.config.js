@@ -8,7 +8,7 @@ module.exports = {
     // 基本路径
     publicPath: process.env.NODE_ENV == 'development' ? './' : '/agent/',
     devServer: {
-        port: 8888,
+        port: 8080,
         open: true
     },
     configureWebpack: {

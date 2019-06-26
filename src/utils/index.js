@@ -5,6 +5,17 @@ class Utils extends Vue {
         super();
 		
     }
+	msg (msg,cb) {
+		this.$dialog.alert({
+			message: msg,
+			confirmButtonColor :'orangered'
+		}).then(()=>{
+			cb && cb();
+		})
+	}
+	toast(msg) {
+		this.$toast(msg);
+	}
 }
 
 export default new Utils;

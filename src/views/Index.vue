@@ -1,15 +1,15 @@
 <template>
 	<div class="index">
 		<h1 class="s-b user-info">
-			<p>林杜森，你好！</p>
-			<span class="agent-level">一级代理</span>
+			<p>{{$store.state.agent.realname}}，你好！</p>
+			<span class="agent-level">{{$store.state.agent.level_name}}</span>
 		</h1>
 		<ul class="data f-s">
 			<li>
 				<router-link tag='div' to='/invoice-record'>
 					<h1>
 						<i class="iconfont">&#xe612;</i>
-						300
+						{{$store.state.agent.purchase_money}}
 					</h1>
 					<h2>货款</h2>
 					<p>用于进货</p>
@@ -20,7 +20,7 @@
 				<router-link tag='div' to='/profit'>
 					<h1>
 						<i class="iconfont">&#xe655;</i>
-						300
+						{{$store.state.agent.balance}}
 					</h1>
 					<h2>收益</h2>
 					<p>可提现</p>

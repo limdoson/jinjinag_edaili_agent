@@ -4,7 +4,7 @@
 		<div class="login-container">
 			<div class="input-item">
 				<i class="iconfont">&#xe61b;</i>
-				<input type="text" v-model="user_name" placeholder="请输入登录账号">
+				<input type="text" v-model="account" placeholder="请输入登录账号">
 			</div>
 			<div class="input-item">
 				<i class="iconfont" style="font-size: 20px;">&#xe623;</i>
@@ -27,7 +27,7 @@
 		components: {},
 		data () {
 			return {
-				user_name : null,//登录用户名
+				account : null,//登录用户名
 				passoword : null,//登录密码
 			}
 		},
@@ -37,15 +37,22 @@
 		
 		methods : {
 			login () {
-				if (!this.user_name) {
+				if (!this.account) {
 					this.$toast.fail('请输入登录账号');
 					return;
 				}
-				if (!this.password) {
+				if (!this.passoword) {
 					this.$toast.fail('请输入登录密码');
 					return;
 				}
-				this.$router.push('/')
+				this.http.post('/v1/ag_agent/login',{
+					account : this.account,
+					password :this.passoword
+				}).then(res => {
+					this.utils.toast('登录成功');
+					this.$store.commit('initUserInfo',res.data)
+					this.$router.push('/index')
+				})
 			}
 		},
 		//mounted () {},

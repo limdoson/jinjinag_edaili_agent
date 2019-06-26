@@ -133,6 +133,18 @@ let router = new Router({
 				title : '收货地址管理'
 			},
 			component : () => import('./views/AdrManage')
+		},{//设置
+			path : '/setting',
+			meta : {
+				title : '设置'
+			},
+			component : () => import('./views/Setting')
+		},{//修改密码
+			path : '/reset-pwd',
+			meta : {
+				title : '修改密码'
+			},
+			component : () => import('./views/setting/ResetPwd')
 		}
     ]
 })
