@@ -8,12 +8,12 @@
 		<div class="btn" @click='show_mask = true;'>
 			邀请代理
 		</div>
-		<p class="tips">
+		<!-- <p class="tips">
 			该链接将于<span class="red">1</span>天内失效
-		</p>
+		</p> -->
 		<!-- 蒙版层 -->
 		<dis class="mask" v-if='show_mask' @click='show_mask = false;'>
-			<img src="../assets/img/share.png" alt="">
+			<img :src="qr_code" alt="">
 		</dis>
 	</div>
 </template>
@@ -24,10 +24,16 @@
 		data () {
 			return {
 				show_mask : false,
+				qr_code : null,//二维码链接
 			}
 		},
 		created () {
-			
+			this.http.post('/v1/ag_agent/createQrCode',{
+				level : this.$route.params.level
+			}).then(res => {
+				this.qr_code = res.data.qrUrl;
+				
+			})
 		},
 		
 		methods : {

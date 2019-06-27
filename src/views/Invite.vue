@@ -32,6 +32,11 @@
 		
 		methods : {
 			curfirm () {
+				if (!this.agent_level) {
+					this.utils.toast('请选择要邀请的代理等级');
+					return;
+				}
+				this.$router.push('/invite-page/'+this.agent_level)
 				console.log(this.agent_level)
 				// this.$router.push('/invite-page')
 			}

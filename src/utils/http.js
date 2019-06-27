@@ -28,13 +28,17 @@ class Http extends Vue {
             // "authorization": Storage.get('session_id') ? Storage.get('session_id') :'',
             'content-type': 'application/json',
         }    
-		
+		this.$toast.loading({
+			mask: true,
+			message: '加载中...'
+		});
         return new Promise((resolve, reject) => {
             http({
                 method: 'post',
                 url,
                 params,
             }).then(res => { 
+				this.$toast.clear();
                 //判断code
                 switch (res.data.code) {
                     case 200: //正常，且有数据，或操作成功
@@ -55,6 +59,7 @@ class Http extends Vue {
 					    this.utils.msg('网络错误，请稍后重试')
 					    break;
                 }
+				
             }).catch(err => {
                 console.log(err)
             })

@@ -4,7 +4,7 @@
 			:title="$route.meta.title" 
 			left-text="返回" 
 			left-arrow
-			@click-left='$router.back()'>
+			@click-left='backHandle'>
 			
 		</van-nav-bar>
 	</div>
@@ -24,7 +24,13 @@
 		},
 		
 		methods : {
-			
+			backHandle () {
+				if (history.length >= 1) {
+					this.$router.back();
+				} else {
+					this.$router.push('/')
+				}
+			}
 		},
 		//mounted () {},
 		// watch () {

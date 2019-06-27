@@ -47,7 +47,7 @@
 						<i class="iconfont">&#xe644;</i>
 						本月新增代理
 					</h1>
-					<h2><a class="red">0</a>人</h2>
+					<h2><a class="red">{{$store.state.agent.month}}</a>人</h2>
 				</div>
 				<span>邀请代理</span>
 			</li>
@@ -57,7 +57,7 @@
 						<i class="iconfont">&#xe644;</i>
 						今日新增代理
 					</h1>
-					<h2><a class="red">0</a>人</h2>
+					<h2><a class="red">{{$store.state.agent.today}}</a>人</h2>
 				</div>
 				<span>邀请代理</span>
 			</li>
@@ -78,7 +78,7 @@
 			}
 		},
 		created () {
-			
+			console.log(this.$store.state)
 		},
 		
 		methods : {

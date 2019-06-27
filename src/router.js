@@ -104,7 +104,7 @@ let router = new Router({
 			},
 			component : () => import('./views/Invite')
 		},{//邀请代理链接页面
-			path : '/invite-page',
+			path : '/invite-page/:level?',
 			meta : {
 				title : '邀请代理'
 			},
@@ -145,6 +145,12 @@ let router = new Router({
 				title : '修改密码'
 			},
 			component : () => import('./views/setting/ResetPwd')
+		},{//代理注册
+			path : '/reg/:recommend_id/:level',
+			meta : {
+				title : '代理注册'
+			},
+			component : () => import('./views/Reg')
 		}
     ]
 })
