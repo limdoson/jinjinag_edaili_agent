@@ -24,6 +24,10 @@ Vue.component('back-header',BackHeader)
 import http from '@u/http'
 Vue.prototype.http = http;
 
+//引入全局注册组件方法
+import vComponent from '@u/reg-components'
+Vue.use(vComponent);
+
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
 Vue.use(VueAwesomeSwiper)

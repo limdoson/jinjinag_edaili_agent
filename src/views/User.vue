@@ -35,7 +35,7 @@
 				</div>
 				
 				<div>
-					<span class="red">0</span>人
+					
 					<i class="iconfont">&#xe641;</i>
 				</div>
 			</router-link>

@@ -151,6 +151,12 @@ let router = new Router({
 				title : '代理注册'
 			},
 			component : () => import('./views/Reg')
+		},{//地址添加编辑
+			path : '/adr-add/:id?',
+			meta : {
+				title : '地址添加/编辑'
+			},
+			component : () => import('./views/AdrAdd')
 		}
     ]
 })
