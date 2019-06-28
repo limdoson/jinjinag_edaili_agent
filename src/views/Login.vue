@@ -15,7 +15,7 @@
 			</div>
 		</div>
 		<!-- 忘记密码 -->
-		<router-link to='/forget-pwd' tag='p' class='forget-pwd'>
+		<router-link to='/reset-pwd' tag='p' class='forget-pwd'>
 			<i class="iconfont">&#xe629;</i>
 			忘记密码
 		</router-link>
