@@ -6,8 +6,8 @@
 		<!-- 左侧主分类选择区 -->
 		<div class="main-cls">
 			<ul>
-				<li v-for='(item,index) in 40' :key='index' :class="active == index ? 'active' : ''" @click='tab(index)'>
-					分类{{index}}
+				<li v-for='(item,index) in allTree' :key='item.id' :class="active == index ? 'active' : ''" @click='tab(index)'>
+					{{item.label}}
 				</li>
 			</ul>
 		</div>
@@ -34,13 +34,23 @@
 			return {
 				key_word : null,
 				active : 0,
+				allTree :null,//顶级分类数据
+				levelTree : null,//当前分类的子分类数据
 			}
 		},
 		created () {
-			
+			this.initData();
 		},
 		
 		methods : {
+			initData() {
+				this.http.post('/v1/ag_goods/getType',{
+					
+				}).then(res => {
+					this.allTree = res.data.allTree;
+					this.levelTree = res.data.levelTree
+				})
+			},
 			search () {
 				console.log(1)
 			},

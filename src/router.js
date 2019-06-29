@@ -5,7 +5,7 @@ Vue.use(Router)
 
 let router = new Router({
     base : process.env.NODE_ENV == 'development' ? './' : '/agent/',
-    mode : 'hash',
+    mode : process.env.NODE_ENV == 'development' ? 'hash' : 'history',
     routes : [
 		{
 			path : '/',
