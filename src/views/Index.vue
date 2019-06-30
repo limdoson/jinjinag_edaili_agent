@@ -14,7 +14,9 @@
 					<h2>货款</h2>
 					<p>用于进货</p>
 				</router-link>
-				<span>充值</span>
+				<router-link tag='span' to='recharge'>
+					充值
+				</router-link>
 			</li>
 			<li>
 				<router-link tag='div' to='/profit'>

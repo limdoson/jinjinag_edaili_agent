@@ -28,7 +28,6 @@
 		methods : {
 			changeTab (active) {
 				this.active = active;
-				console.log(this.active)
 			}
 		}
 	}

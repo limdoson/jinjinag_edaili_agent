@@ -1,23 +1,22 @@
 <template>
-	<div class="stock-purchase">
+	<div class="stock-purchase" v-if='allTree'>
 		<div class="search">
 			<van-search placeholder="请输入搜索关键词" shape='round' v-model="key_word" @search="search"/>
 		</div>
 		<!-- 左侧主分类选择区 -->
 		<div class="main-cls">
 			<ul>
-				<li v-for='(item,index) in allTree' :key='item.id' :class="active == index ? 'active' : ''" @click='tab(index)'>
+				<li v-for='(item,index) in allTree' :key='item.value' :class="active == index ? 'active' : ''" @click='tab(index,item.value)'>
 					{{item.label}}
 				</li>
 			</ul>
 		</div>
 		<div class="container">
-			<img src="../assets/img/logo.png" alt="">
-			<p>主分类广告图</p>
+			<router-link tag='img' :to='levelTree.top.url' :src='levelTree.top.img' v-if='levelTree.top.url'></router-link>
 			<ul class="sub-cls">
-				<li v-for='(item,index) in 10' :key='index +20' @click="$router.push('/product-detail')">
-					<img src="https://img.alicdn.com/imgextra/i1/3107144874/TB2i9NXbwkLL1JjSZFpXXa7nFXa_!!3107144874-0-beehive-scenes.jpg_180x180xzq90.jpg_.webp" alt="">
-					<p>子分类{{index}}</p>
+				<li v-for='(item,index) in levelTree.tree' :key='item.value'  @click='clsClick(item)'>
+					<img :src="item.img" alt="">
+					<p>{{item.label}}</p>
 				</li>
 			</ul>
 		</div>
@@ -43,9 +42,9 @@
 		},
 		
 		methods : {
-			initData() {
+			initData(id) {
 				this.http.post('/v1/ag_goods/getType',{
-					
+					id : id ? id : null
 				}).then(res => {
 					this.allTree = res.data.allTree;
 					this.levelTree = res.data.levelTree
@@ -54,21 +53,21 @@
 			search () {
 				console.log(1)
 			},
-			tab (index) {
+			tab (index,id) {
+				console.log(id)
 				this.active = index;
+				this.initData(id);
+			},
+			//点击子分类
+			clsClick (item) {
+				//判断子分类底下是否还有分类
+				if (item.children) {
+					this.initData(item.value)
+				} else {
+					this.$router.push('/product-list/'+item.value)
+				}
 			}
 		},
-		//mounted () {},
-		// watch () {
-		// 	a (n,o) {
-		// 		
-		// 	}
-		// },
-		// computed () {
-		// 	a () {
-		// 		return this.a
-		// 	}
-		// },
 	}
 </script>
 <style lang="less" scoped>
@@ -114,6 +113,7 @@
 					margin-bottom: 10px;
 					text-align: center;
 					img {
+						width: 80%;
 						border-radius: 4px;
 					}
 					p {

@@ -85,6 +85,12 @@ let router = new Router({
 				title : '货款记录'
 			},
 			component : () => import('./views/InvoiceRecord')
+		},{//货款充值
+			path : '/recharge',
+			meta : {
+				title : '货款充值'
+			},
+			component : () => import('./views/Recharge')
 		},{//我的订单
 			path : '/order',
 			meta : {
@@ -157,6 +163,12 @@ let router = new Router({
 				title : '地址添加/编辑'
 			},
 			component : () => import('./views/AdrAdd')
+		},{//商品列表
+			path : '/product-list/:id?',
+			meta : {
+				title : '商品列表'
+			},
+			component : () => import('./views/product/ProductList')
 		}
     ]
 })

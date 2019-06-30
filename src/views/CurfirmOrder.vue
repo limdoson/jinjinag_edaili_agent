@@ -3,8 +3,12 @@
 		<back-header></back-header>
 		<!-- 选择联系人 -->
 		<div class="contacts">
-			<div class="s-b" @click='show = true'>
-				<span>选择收货人</span>
+			<div class="s-b" @click='choseAdr'>
+				<div  v-if='!goods_data.adr'>选择收货人</div>
+				<div v-else>
+					<h1>{{goods_data.adr.name}}-{{goods_data.adr.tel}}</h1>
+					<p>{{goods_data.adr.province}}{{goods_data.adr.city}}{{goods_data.adr.area}}{{goods_data.adr.adr}}</p>
+				</div>
 				<i class="iconfont">&#xe641;</i>
 			</div>
 		</div>
@@ -12,44 +16,28 @@
 		<div class="order-info">
 			<h1 class="title">订单信息</h1>
 			<ul class="product-list">
-				<li class='f-s'>
-					<img src="../assets/img/logo.png" alt="">
+				<li class='f-s' v-for='item in goods_data.goods' :key='item.id'>
+					<img :src="item.img" alt="">
 					<div>
-						<h2>商品名称</h2>
+						<h2>{{item.goods_name}}</h2>
 						<p>
-							<span class="attr">规格1</span>
-							<span class="attr">规格2</span>
+							<span class="attr">{{item.attribute_name ? item.attribute_name : ''}}</span>
 						</p>
 						<p class='product-des s-b'>
 							<span>
-								进货单价：<span class="red">￥10</span>
+								单价：<span class="red">￥{{item.price}}</span>
 							</span>
 							<span>
-								进货数量：<span class="red">10</span>
-							</span>
-						</p>
-					</div>
-				</li>
-				<li class='f-s'>
-					<img src="../assets/img/logo.png" alt="">
-					<div>
-						<h2>商品名称</h2>
-						<p>
-							<span class="attr">规格1</span>
-							<span class="attr">规格2</span>
-						</p>
-						<p class='product-des s-b'>
-							<span>
-								进货单价：<span class="red">￥10</span>
-							</span>
-							<span>
-								进货数量：<span class="red">10</span>
+								进货数量：<span class="red">{{item.number}}</span>
 							</span>
 						</p>
 					</div>
 				</li>
 			</ul>
 		</div>
+		<van-cell title="选择优惠券" @click='show_coupon = true' style='margin-top: 8px;' is-link>
+			
+		</van-cell>
 		<!-- 备注信息 -->
 		<div class="remark">
 			<van-field v-model="remark" type='textarea' placeholder="如果需要,可输入备注信息" style='flex: 1;'/>
@@ -57,27 +45,21 @@
 		
 		<!-- 底部按钮 -->
 		<footer @click='show_action_sheet = true'>
-			合计：￥100，立即支付
+			合计：￥{{goods_data.totalMoney}}(含运费：{{goods_data.freight}})，立即支付
 		</footer>
 		<!-- 选择地址 -->
 		<van-popup v-model="show" position="bottom" :overlay="true">
-			<ul class="adr-list">
-				<li class="s-b">
-					<div>
-						<h1>林杜森-15960209969</h1>
-						<p>福建省厦门市思明区国际石材中心福建省厦门市思明区国际石材中心福建省厦门市思明区国际石材中心福建省厦门市思明区国际石材中心411</p>
+			<ul class="adr-list" v-if='adr_list'>
+				<li class="s-b" v-for='item in adr_list' :key='item.id' >
+					<div @click='confirmChoseAdr(item)'>
+						<h1>{{item.name}}-{{item.tel}}</h1>
+						<p>{{item.province}}{{item.city}}{{item.area}}{{item.adr}}</p>
 					</div>
-					<i class="iconfont">&#xe66c;</i>
-				</li>
-				<li class="s-b">
-					<div>
-						<h1>林杜森-15960209969</h1>
-						<p>福建省厦门市思明区国际石材中心福建省厦门市思明区国际石材中心福建省厦门市思明区国际石材中心福建省厦门市思明区国际石材中心411</p>
-					</div>
-					<i class="iconfont">&#xe66c;</i>
+					<router-link tag='i' class='iconfont' :to="'/adr-add/'+item.id">&#xe66c;</router-link>
 				</li>
 			</ul>
-			<div class="btn">新增地址</div>
+			<none v-else></none>
+			<div class="btn" @click="$router.push('/adr-add')">新增地址</div>
 		</van-popup>
 		<!-- 选择支付方式 -->
 		<van-action-sheet
@@ -86,6 +68,12 @@
 			cancel-text="取消"
 			@select="onSelect"
 		/>
+		<!-- 优惠券选择 -->
+		<van-popup v-model="show_coupon" position="bottom" :style="{ height: '70%' }">
+			<ul class="coupon-list">
+				<li></li>
+			</ul>
+		</van-popup>
 	</div>
 </template>
 
@@ -99,25 +87,62 @@
 				remark : null,
 				pay_type : [
 					{
-						name : '货款支付',
+						name : '微信支付',
 						pay_type :1
 					},{
-						name :'微信支付',
+						name :'支付宝支付',
 						pay_type :2
 					},{
-						name : '支付宝支付',
+						name : '货款支付',
 						pay_type :3
 					}
-				]
+				],
+				show_coupon :false,
+				goods_data : null,//前面提交过来的数据
+				adr_list : null,//用来存储用户的地址列表数据
 			}
 		},
 		created () {
-			
+			this.goods_data = JSON.parse(this.$route.query.data);
+			console.log(this.goods_data)
 		},
 		
 		methods : {
 			onSelect (item) {
+				if (!this.goods_data.adr.name) {
+					this.utils.toast('请选择收货地址');
+					return;
+				}
+				this.http.post('/v1/ag_order/createOrder',{
+					adrId : this.goods_data.adr.id,
+					payType : item.pay_type,
+					couponId : 0,
+					msg : this.remark,
+					goods : JSON.stringify(this.goods_data.goods)
+				}).then(res => {
+					
+				})
 				console.log(item)
+			},
+			//
+			//选择地址函数
+			choseAdr () {
+				if (!this.adr_list) {
+					this.http.post('/v1/ag_agent/getAdr',{
+						
+					}).then(res => {
+						console.log(res)
+						this.adr_list = res.data;
+						this.show = true;
+					})
+				} else {
+					this.show = true;
+				}
+			},
+			//确认选择地址
+			confirmChoseAdr (item) {
+				this.goods_data.adr = item;
+				this.show = false;
 			}
 		},
 		//mounted () {},
@@ -140,6 +165,11 @@
 			position: relative;
 			padding: 15px 10px;
 			background: #fff;
+			p {
+				margin-top: 10px;
+				font-size: 12px;
+				color: #555;
+			}
 		}
 		.contacts::before {
 			position: absolute;

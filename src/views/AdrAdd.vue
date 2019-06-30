@@ -24,7 +24,7 @@
 				label="详细地址"
 				type='text'
 				placeholder="详细地址"/>
-			<!-- <van-switch-cell v-model="is_default" title="是否设为默认地址" active-color='orangered'/> -->
+			<van-switch-cell v-model="is_default" title="是否设为默认地址" active-color='orangered'/>
 		</van-cell-group>
 		<div class="btn-item">
 			<div class="btn" @click='add' v-if='!$route.params.id'>添加地址</div>
@@ -70,6 +70,7 @@
 					this.city = res.data.city;
 					this.area = res.data.area;
 					this.adr = res.data.adr;
+					this.is_default = res.data.is_default ? true : false;
 				})
 			}
 		},
@@ -100,7 +101,8 @@
 						province :this.province,
 						city : this.city,
 						area :this.area,
-						adr : this.adr
+						adr : this.adr,
+						is_default :this.is_default ? 1 : 0
 					}).then(res => {
 						this.utils.toast('编辑成功');
 						
@@ -112,7 +114,8 @@
 						province :this.province,
 						city : this.city,
 						area :this.area,
-						adr : this.adr
+						adr : this.adr,
+						is_default : this.is_default ? 1 : 0
 					}).then(res => {
 						this.utils.toast('添加成功');
 						this.name = null;
