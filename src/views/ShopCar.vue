@@ -118,7 +118,7 @@
 			submitOrder () {
 				if (this.entablHanlde()) {
 					this.http.post('/v1/ag_order/confirmOrder',{
-						goods : JSON.stringify(this.list)
+						goods : JSON.stringify(this.list.filter(item => item.check))
 					}).then(res => {
 						this.$router.push({
 							path : '/curfirm-order',

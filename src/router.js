@@ -169,6 +169,12 @@ let router = new Router({
 				title : '商品列表'
 			},
 			component : () => import('./views/product/ProductList')
+		},,{//支付成功
+			path : '/pay-success',
+			meta :{
+				title : '支付成功'
+			},
+			component : () => import('./components/PaySuccess')
 		}
     ]
 })

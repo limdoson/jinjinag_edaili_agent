@@ -120,7 +120,9 @@
 					msg : this.remark,
 					goods : JSON.stringify(this.goods_data.goods)
 				}).then(res => {
-					
+					this.utils.msg(res.msg, () => {
+						this.$router.replace('/pay-success')
+					})
 				})
 				console.log(item)
 			},
