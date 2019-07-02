@@ -42,7 +42,7 @@
 				<div class="btns">
 					<span v-if='item.status == 0'>支付订单</span>
 					<span v-if='item.status == 0' @click='cancelOrder(item.id)'>取消订单</span>
-					<span v-if='item.status == 1'>查看物流</span>
+					<!-- <span v-if='item.status == 1'>查看物流</span> -->
 					<span v-if='item.status == 2' @click='confirmReceive(item.id)'>确认收货</span>
 				</div>
 			</li>

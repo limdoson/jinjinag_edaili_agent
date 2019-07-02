@@ -4,11 +4,11 @@
 		<header class='record-header'>
 			<h1>
 				总充值
-				<p>￥0</p>
+				<p>￥{{income}}</p>
 			</h1>
 			<h2>
 				总消费
-				<p>￥0</p>
+				<p>￥{{expend}}</p>
 			</h2>
 		</header>
 		<van-tabs v-model="active">
@@ -23,12 +23,12 @@
 			<ul class="record-list">
 				<li class="s-b" v-for="(item,index) in list" :key='index'>
 					<div>
-						<p v-if="item.sta == 0">货款充值<span class="red">￥1000</span>元</p>
-						<p v-else>订单编号：<span class="red">{{item.order_ind}}，</span>进货<span class="red">{{item.money}}元</span></p>
-						<p>{{item.time}}</p>
+						<p v-if="active == 0">货款充值<span class="red">￥{{item.money}}</span>元</p>
+						<p v-else>订单编号：<span class="red">{{item.ind}}，</span>进货<span class="red">{{item.money}}元</span></p>
+						<p>{{item.add_time}}</p>
 					</div>
 					<div>
-						{{item.status}}
+						{{item.remark}}
 					</div>
 				</li>
 			</ul>
@@ -42,27 +42,15 @@
 		data () {
 			return {
 				active : 0,
+				income : 0,
+				expend : 0,
 				loading : false,
 				finished :false,
 				
-				list : [
-					{
-						money : 10,
-						order_ind : 11,
-						time : '2018-08-08',
-						status :'线上充值'
-					},{
-						money : 10,
-						order_ind : 11,
-						time : '2018-08-08',
-						status :'管理员充值'
-					},{
-						money : 10,
-						order_ind : 11,
-						time : '2018-08-08',
-						status :'线上充值'
-					}
-				]
+				list : null,
+				page :1,
+				limit : 20,
+				type :1
 			}
 		},
 		created () {
@@ -70,55 +58,37 @@
 		},
 		
 		methods : {
-			loadMore () {}
+			loadMore () {
+				this.http.post('/v1/ag_account/getPurchaseLog',{
+					limit : this.limit,
+					page : this.page,
+					type : this.active +1
+				}).then(res => {
+					let data = res.data.log.data;
+					if (data.length) {
+						if (this.page == 1) {
+							this.income = res.data.income;
+							this.expend = res.data.expend;
+							this.list = data;
+						} else {
+							this.list = this.list.concat(data)
+						}
+						this.page ++;
+						this.loading = false;
+						this.finished = false;
+					} else {
+						this.loading = false;
+						this.finished = true;
+					}
+				})
+			}
 		},
 		watch :{
-			'active' (n,o) {
-				switch (n){
-					case 0:
-						this.list = [
-							{
-								money : 10,
-								time : '2018-08-08',
-								sta : 0,
-								status :'线上充值'
-							},{
-								money : 10,
-								time : '2018-08-08',
-								sta : 0,
-								status :'管理员充值'
-							},{
-								money : 10,
-								time : '2018-08-08',
-								sta : 0,
-								status :'线上充值'
-							}
-						]
-						break;
-					case 1:
-						this.list =  [
-							{
-								money : 10,
-								order_ind : 1000025454,
-								time : '2018-08-08',
-								sta : 1,
-								status :'进货支付'
-							},{
-								money : 10,
-								order_ind : 1000025454,
-								time : '2018-08-08',
-								sta : 1,
-								status :'进货支付'
-							},{
-								money : 10,
-								order_ind : 1000025454,
-								time : '2018-08-08',
-								sta : 1,
-								status :'进货支付'
-							}
-						]
-						break;
-				}
+			'active' () {
+				this.page = 1;
+				this.list = null;
+				this.finished = false;
+				this.loadMore()
 			}
 		}
 		//mounted () {},
