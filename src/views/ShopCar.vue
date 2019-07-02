@@ -5,7 +5,7 @@
 				<van-checkbox v-model='item.check' checked-color='orangered' @change='sleectItem'></van-checkbox>
 				<router-link tag='img' :to="'/product-detail/'+item.goods_id" :src="item.img"></router-link>
 				<div class="product-info">
-					<h1>商品名称</h1>
+					<h1>{{item.goods_name}}</h1>
 					<p class="attr" >{{item.attribute_name ? item.attribute_name : null}}</p>
 					<div class="s-b">
 						<p>
@@ -171,6 +171,7 @@
 			li {
 				padding: 10px;
 				background: #fff;
+				border-bottom: 1px solid #f1f1f1;
 				img {
 					width: 70px;
 					height: 70px;
