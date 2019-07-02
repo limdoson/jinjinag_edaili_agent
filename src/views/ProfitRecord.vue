@@ -4,7 +4,7 @@
 		<header>
 			<h1>
 				累计收益
-				<p>￥<span>1000</span></p>
+				<p>￥<span>{{total_prifit}}</span></p>
 			</h1>
 		</header>
 		<van-list
@@ -13,14 +13,14 @@
 			finished-text='没有更多了'
 			@load='loadMore'>
 			<ul class="record-list">
-				<li class='s-b' v-for='item in list'>
+				<li class='s-b' v-for='item in list' :key='item.id'>
 					<div>
-						<p>下级代理<span class="red">林文峰（ID：10）</span>进货<span class="red">1000</span>元</p>
-						<p>拿货折扣：<span class="red">9折</span></p>
-						<p>2018-02-02</p>
+						<p>{{item.remark}}</p>
+						<!-- <p>拿货折扣：<span class="red">9折</span></p> -->
+						<p>{{item.add_time}}</p>
 					</div>
 					<div>
-						收益：<span class="green">10</span>元
+						收益：<span class="green">{{item.money}}</span>元
 					</div>
 				</li>
 			</ul>
@@ -35,7 +35,10 @@
 			return {
 				loading : false,
 				finished : false,
-				list :[]
+				list :null,
+				page :1,
+				limit : 10,
+				total_prifit : 0
 			}
 		},
 		created () {
@@ -44,18 +47,26 @@
 		
 		methods : {
 			loadMore () {
-				setTimeout(() => {
-					for (let i = 0; i < 10; i++) {
-					  this.list.push(this.list.length + 1);
-					}
-					// 加载状态结束
-					this.loading = false;
-
-					// 数据全部加载完成
-					if (this.list.length >= 40) {
+				this.http.post('/v1/ag_account/getProfitLog',{
+					page : this.page,
+					limit : this.limit
+				}).then(res => {
+					if (res.data.log.data.length) {
+						if (this.page == 1) {
+							this.list = res.data.log.data;
+							this.total_prifit = res.data.income;
+						} else {
+							
+							this.list = this.list.concat(res.data.log.data);
+						}
+						this.page ++;
+						this.finished = false;
+						this.loading = false;
+					} else {
 						this.finished = true;
+						this.loading = false;
 					}
-				}, 500);
+				})
 			}
 		},
 		//mounted () {},
