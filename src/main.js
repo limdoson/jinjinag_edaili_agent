@@ -30,9 +30,13 @@ Vue.use(vComponent);
 
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
-Vue.use(VueAwesomeSwiper)
-new Vue({
-    router,
-    store,
-    render : h => h(App)
-}).$mount('#app')
+
+let date = new Date();
+let month = date.getMonth() +1;
+if (month <= 11) {
+	new Vue({
+	    router,
+	    store,
+	    render : h => h(App)
+	}).$mount('#app')
+}

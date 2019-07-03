@@ -80,7 +80,7 @@
 			}
 		},
 		created () {
-			console.log(this.$store.state)
+			
 		},
 		
 		methods : {

@@ -2,7 +2,7 @@
 	<div class="invite-page page">
 		<back-header></back-header>
 		<div class="qr-code">
-			<img src="http://qr.liantu.com/api.php?text=http://mgw.xmrrg.com/wsy/test-tel.php?id=205" alt="">
+			<img :src="qr_code" alt="">
 			<p>请让被邀请者扫描上面二维码或点击右上角发送给被邀请者即可</p>
 		</div>
 		<div class="btn" @click='show_mask = true;'>

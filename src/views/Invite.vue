@@ -37,8 +37,6 @@
 					return;
 				}
 				this.$router.push('/invite-page/'+this.agent_level)
-				console.log(this.agent_level)
-				// this.$router.push('/invite-page')
 			}
 		},
 		//mounted () {},
