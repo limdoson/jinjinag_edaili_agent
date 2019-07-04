@@ -179,5 +179,21 @@ let router = new Router({
     ]
 })
 
+let wx_api_list =['openLocation','getLocation','updateAppMessageShareData','updateTimelineShareData','onMenuShareAppMessage','onMenuShareTimeline','chooseWXPay'];
+router.afterEach((to, from) => {
+	document.title = to.meta.title;
+	if (process.env.NODE_ENV != 'development') {
+		http.post('',{
+			wx.config({
+				debug : false,
+				appId : pay_data.data.appId,
+				timestamp : pay_data.data.timestamp,
+				nonceStr : pay_data.data.nonceStr,
+				signature : pay_data.data.signature,
+				jsApiList : wx_api_list,
+			})
+		})
+	}
+})
 
 export default router;
