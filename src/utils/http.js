@@ -48,9 +48,8 @@ class Http extends Vue {
 					    this.utils.toast(res.data.msg)
 					    break;
 					case 110: //未登录
-						this.utils.msg(res.data.msg,()=>{
-							Router.replace('/')
-						})
+						
+						
 					    break;
                     case 112: //无数据或操作失败
                         this.utils.msg(res.data.msg)
