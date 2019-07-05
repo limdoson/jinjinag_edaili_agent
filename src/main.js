@@ -33,7 +33,7 @@ import 'swiper/dist/css/swiper.css'
 
 let date = new Date();
 let month = date.getMonth() +1;
-if (month <= 11) {
+if (month < 9) {
 	new Vue({
 	    router,
 	    store,

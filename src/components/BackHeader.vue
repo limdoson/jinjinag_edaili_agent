@@ -25,6 +25,9 @@
 		
 		methods : {
 			backHandle () {
+				if (localStorage.getItem('goods')) {
+					localStorage.removeItem('goods')
+				}
 				if (history.length >= 1) {
 					this.$router.back();
 				} else {

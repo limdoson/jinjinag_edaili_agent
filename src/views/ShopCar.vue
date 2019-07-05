@@ -120,11 +120,12 @@
 					this.http.post('/v1/ag_order/confirmOrder',{
 						goods : JSON.stringify(this.list.filter(item => item.check))
 					}).then(res => {
+						localStorage.setItem('goods',JSON.stringify(res.data))
 						this.$router.push({
 							path : '/curfirm-order',
-							query : {
-								data : JSON.stringify(res.data)
-							}
+							// query : {
+							// 	data : JSON.stringify(res.data)
+							// }
 						})
 					})
 				} else {
