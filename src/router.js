@@ -184,6 +184,28 @@ let router = new Router({
 })
 
 let wx_api_list =['openLocation','getLocation','updateAppMessageShareData','updateTimelineShareData','onMenuShareAppMessage','onMenuShareTimeline','chooseWXPay'];
+
+router.beforeEach((to,form,next) => {
+
+	if (to.path == '/order') {
+		http.post('/v1/wechat/sdk',{
+			url : 'https://laravel.linxmwx.cn/agent/order'
+		}).then(res => {
+			wx.config({
+				debug : false,
+				appId : res.data.appId,
+				timestamp : res.data.timestamp,
+				nonceStr : res.data.nonceStr,
+				signature : res.data.signature,
+				jsApiList : ['chooseWXPay'],
+			})
+			next();
+		})
+	} else {
+		next()
+	}
+})
+
 router.afterEach((to, from) => {
 	document.title = to.meta.title;
 	if (to.path == '/curfirm-order') {

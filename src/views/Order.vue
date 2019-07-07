@@ -40,7 +40,7 @@
 					<span>供{{item.totalNum}}件商品，合计：<span class="red">￥{{item.pay_amount}}</span></span>
 				</div>
 				<div class="btns">
-					<span v-if='item.status == 0'>支付订单</span>
+					<span v-if='item.status == 0' @click='payOrder(item)'>支付订单</span>
 					<span v-if='item.status == 0' @click='cancelOrder(item.id)'>取消订单</span>
 					<!-- <span v-if='item.status == 1'>查看物流</span> -->
 					<span v-if='item.status == 2' @click='confirmReceive(item.id)'>确认收货</span>
@@ -120,6 +120,31 @@
 			loadMore () {
 				this.page ++;
 				this.initData();
+			},
+			//支付订单
+			payOrder (item) {
+				let me = this;
+				if (item.pay_type == 1) {//微信支付
+					this.http.post('/v1/wechat/wxPay',{
+						orderIds : JSON.stringify([item.id])
+					}).then(pay_data => {
+						wx.chooseWXPay({
+							timestamp : pay_data.data.timestamp,
+							appId : pay_data.data.appId,
+							nonceStr : pay_data.data.nonceStr,
+							package : pay_data.data.package,
+							signType : pay_data.data.signType,
+							paySign : pay_data.data.paySign,
+							success : pay => {
+								localStorage.removeItem('goods')
+								me.$router.replace('/pay-success')
+							},
+							fail : err => {
+								
+							}
+						})
+					})
+				} 
 			}
 		},
 		//mounted () {},

@@ -42,7 +42,7 @@
 			<router-link tag='li' to='/order'>
 				<div>
 					<i class="iconfont" style="color: deepskyblue;">&#xe636;</i>
-					我的进订单
+					我的进货订单
 				</div>
 				<div>
 					<i class="iconfont">&#xe641;</i>
