@@ -81,31 +81,31 @@
 		},
 		created () {
 			let params = location.search;
-			// if (params) {
-			// 	let str = params.substring(1);
-			// 	let code = str.split('&')[0].split('=')[1];
-			// 	let state = str.split('&')[1].split('=')[1];
-			// 	if (state == 'STATE') {
-			// 		state = null
-			// 	}
-			// 	this.http.post('/v1/wechat/agentGetOpenid',{
-			// 		code : code
-			// 	}).then(res => {
-			// 		
-			// 		console.log(res)
-			// 		// this.initData();
-			// 	})
-			// } else {
-			// 	this.http.post('/v1/wechat/getAppId',{
-			// 		
-			// 	}).then(res => {
-			// 		let url = encodeURIComponent('https://laravel.linxmwx.cn/agent/index');
-			// 		let _href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+ res.data.appId + '&redirect_uri=' + url + '&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect'
-			// 		
-			// 		location.href = _href;
-			// 	})
-			// 	
-			// }
+			if (params) {
+				let str = params.substring(1);
+				let code = str.split('&')[0].split('=')[1];
+				let state = str.split('&')[1].split('=')[1];
+				if (state == 'STATE') {
+					state = null
+				}
+				this.http.post('/v1/wechat/agentGetOpenid',{
+					code : code
+				}).then(res => {
+					
+					console.log(res)
+					// this.initData();
+				})
+			} else {
+				this.http.post('/v1/wechat/getAppId',{
+					
+				}).then(res => {
+					let url = encodeURIComponent('https://laravel.linxmwx.cn/agent/index');
+					let _href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+ res.data.appId + '&redirect_uri=' + url + '&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect'
+					
+					location.href = _href;
+				})
+				
+			}
 			
 		},
 		
